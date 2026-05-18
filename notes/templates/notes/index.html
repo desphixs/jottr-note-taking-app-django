@@ -26,85 +26,42 @@
             </p>
         </header>
 
-        <!-- Dynamic note cards container (currently holding our dummy static data) -->
+        <!-- Dynamic note cards container (looping through our context database list) -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            <!-- First static note card -->
+            <!-- We use a Django Template Language {percent for percent} loop to process each note item sequentially! -->
+            {% for note in notes %}
             <div
                 class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <!-- Top accent border line -->
-                <div class="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-blue-500 to-blue-400"></div>
+                <!-- Top accent border line using the note's custom color attribute dynamically -->
+                <div
+                    class="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-{{ note.color }}-500 to-{{ note.color }}-400">
+                </div>
 
                 <div>
+                    <!-- The group-hover transition dynamically highlights our title in the note's customized theme color! -->
                     <h3
-                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-blue-600 transition-colors duration-300">
-                        First Test Note
+                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-{{ note.color }}-600 transition-colors duration-300">
+                        {{ note.title }}
                     </h3>
                     <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                        Welcome to Jottr! This is a hardcoded placeholder note designed to make sure our Django template
-                        system loads and renders HTML layouts perfectly.
+                        {{ note.content }}
                     </p>
                 </div>
 
                 <div
                     class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
-                    <span>Just Now</span>
+                    <span>{{ note.created_at }}</span>
                     <span class="bg-slate-50 text-slate-600 px-3 py-1 rounded-full font-medium">
-                        Welcome
+                        {{ note.tag }}
                     </span>
                 </div>
             </div>
-
-            <!-- Second static note card -->
-            <div
-                class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <!-- Top accent border line -->
-                <div class="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-violet-500 to-violet-400"></div>
-
-                <div>
-                    <h3
-                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-violet-600 transition-colors duration-300">
-                        Buy Groceries
-                    </h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                        Remember to purchase organic milk, farm-fresh brown eggs, whole wheat sourdough bread, and fresh
-                        rosemary for dinner cooking.
-                    </p>
-                </div>
-
-                <div
-                    class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
-                    <span>1 Hour Ago</span>
-                    <span class="bg-slate-50 text-slate-600 px-3 py-1 rounded-full font-medium">
-                        Shopping
-                    </span>
-                </div>
+            <!-- The {percent empty percent} block handles the fallback state beautifully if our list is clean and empty! -->
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-slate-400 text-lg">No notes found. Your digital sticky-note wall is clean and empty!</p>
             </div>
-
-            <!-- Third static note card -->
-            <div
-                class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <!-- Top accent border line -->
-                <div class="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-amber-500 to-amber-400"></div>
-
-                <div>
-                    <h3
-                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-amber-600 transition-colors duration-300">
-                        Next Big Startup
-                    </h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                        Build an AI-powered automated code mentor that reads plans and writes highly clean,
-                        beginner-friendly explanations of complex tech stacks step-by-step!
-                    </p>
-                </div>
-
-                <div
-                    class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
-                    <span>Yesterday</span>
-                    <span class="bg-slate-50 text-slate-600 px-3 py-1 rounded-full font-medium">
-                        Ideas
-                    </span>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
