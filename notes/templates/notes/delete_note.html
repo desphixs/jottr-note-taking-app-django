@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Note — Jottr</title>
+    <!-- We load TailwindCSS to give our page a premium, modern, startup-grade aesthetic right out of the box! -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 min-h-screen text-slate-800 antialiased selection:bg-rose-100 selection:text-rose-900 py-16 px-4">
+    <div class="max-w-2xl mx-auto">
+        <!-- Back navigation link styled in clean minimalist rose with a subtle sliding arrow animation pointing back to Details -->
+        <a href="{% url 'notes:note_detail' note.pk %}"
+            class="inline-flex items-center text-sm font-semibold text-rose-600 hover:text-rose-800 transition-colors mb-8 group">
+            <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Note
+        </a>
+
+        <!-- Large, beautiful detailed warning card -->
+        <div class="bg-white rounded-3xl p-8 md:p-12 shadow-sm border border-slate-100 relative overflow-hidden text-center">
+            <!-- Top accent border line using our signature solid danger rose theme -->
+            <div class="absolute top-0 left-0 w-full h-[8px] bg-rose-600"></div>
+
+            <!-- Danger Warning Icon -->
+            <div class="w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-600 mb-6 mx-auto">
+                <svg class="w-8 h-8 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+
+            <header class="mb-8">
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">
+                    Are you absolutely sure?
+                </h1>
+                <p class="text-slate-500 text-sm mt-2">
+                    This action is permanent and cannot be undone. The sticky note will be permanently erased.
+                </p>
+            </header>
+
+            <!-- Note Content Preview Sandbox Box -->
+            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-6 mb-8 text-left">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">Note Preview</span>
+                <h3 class="font-bold text-slate-800 text-lg mb-1">{{ note.title }}</h3>
+                <p class="text-slate-600 text-sm line-clamp-3 whitespace-pre-line">{{ note.content }}</p>
+            </div>
+
+            <!-- Note Deletion HTML Form -->
+            <!-- We submit the form via POST to delete our SQLite record row! -->
+            <form method="POST" class="space-y-6">
+                <!-- VERY IMPORTANT: Django requires the {% csrf_token %} tag inside POST forms! -->
+                {% csrf_token %}
+
+                <!-- Form Action Buttons in a nice flex container -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4 border-t border-slate-100">
+                    <!-- Cancel Button: links back to our single note details view page -->
+                    <a href="{% url 'notes:note_detail' note.pk %}"
+                        class="w-full sm:w-auto text-center px-6 py-3.5 bg-slate-50 hover:bg-slate-100 text-slate-600 font-semibold rounded-2xl transition-colors duration-300">
+                        No, Keep Note
+                    </a>
+                    <!-- Submit Button: Triggers form data package submission to delete database record -->
+                    <button type="submit"
+                        class="w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-semibold rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+                        Yes, Delete Note
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -114,3 +114,25 @@ def edit_note(request, pk):
 
     # We render the edit_note.html template and deliver the context serving tray!
     return render(request, 'notes/edit_note.html', context)
+
+# We define a brand new view function to handle deleting existing notes!
+# This view takes both 'request' and 'pk' parameters to capture the targeted note card!
+def delete_note(request, pk):
+    # We fetch the specific note folder we want to delete from our SQLite database cabinet!
+    note = Note.objects.get(pk=pk)
+
+    # We check if the incoming request is a POST submission (user confirmed deletion!)
+    if request.method == 'POST':
+        # We delete the note folder permanently from our database cabinet!
+        note.delete()
+        # Once deleted, we redirect the user cleanly back to our homepage note dashboard!
+        return redirect('notes:note_list')
+
+    # If it is a GET request, the user is just loading the delete confirmation screen!
+    # We pack the note object onto our serving tray so the template can show a preview of what is being deleted!
+    context = {
+        'note': note,
+    }
+
+    # We render our delete confirmation workspace template!
+    return render(request, 'notes/delete_note.html', context)

@@ -29,4 +29,9 @@ urlpatterns = [
     # The segment '<int:pk>/edit/' captures the barcode ID of the note being updated,
     # and opens a pre-populated workspace for edit operations!
     path('<int:pk>/edit/', views.edit_note, name='edit_note'),
+
+    # This path maps to our 'delete_note' view function to handle deleting existing notes.
+    # The segment '<int:pk>/delete/' captures the barcode ID of the note being deleted,
+    # and opens a confirmation dialog warning screen!
+    path('<int:pk>/delete/', views.delete_note, name='delete_note'),
 ]
