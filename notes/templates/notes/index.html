@@ -32,15 +32,13 @@
             {% for note in notes %}
             <div
                 class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <!-- Top accent border line using the note's custom color attribute dynamically -->
-                <div
-                    class="absolute top-0 left-0 w-full h-[6px] bg-gradient-to-r from-{{ note.color }}-500 to-{{ note.color }}-400">
-                </div>
+                <!-- Top accent border line using a solid premium indigo theme -->
+                <div class="absolute top-0 left-0 w-full h-[6px] bg-indigo-600"></div>
 
                 <div>
-                    <!-- The group-hover transition dynamically highlights our title in the note's customized theme color! -->
+                    <!-- The group-hover transition dynamically highlights our title in clean indigo -->
                     <h3
-                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-{{ note.color }}-600 transition-colors duration-300">
+                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
                         {{ note.title }}
                     </h3>
                     <p class="text-slate-500 text-sm leading-relaxed mb-6">
@@ -50,9 +48,10 @@
 
                 <div
                     class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
-                    <span>{{ note.created_at }}</span>
-                    <span class="bg-slate-50 text-slate-600 px-3 py-1 rounded-full font-medium">
-                        {{ note.tag }}
+                    <!-- Displaying the real database created_at field, formatted nicely -->
+                    <span>{{ note.created_at|date:"F j, Y" }}</span>
+                    <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-medium">
+                        Note
                     </span>
                 </div>
             </div>
