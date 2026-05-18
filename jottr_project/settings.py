@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-4s^ytmilru*6vqfzf@&6vl&2soeq=x#q-749v&=pb2x2em*h7z'
+SECRET_KEY = 'django-insecure--u!hq=!44^gnrquh7)o$@=(izyo8oe(kh^p&1a^8=-1ap-48)j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,10 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # We are telling Django about our newly created 'notes' app. 
-    # Think of this list like a roster of employees for a company.
-    # If the 'notes' app isn't on the roster, Django won't give it any work or know it exists!
-    'notes',
 ]
 
 MIDDLEWARE = [
