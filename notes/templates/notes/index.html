@@ -39,7 +39,10 @@
                     <!-- The group-hover transition dynamically highlights our title in clean indigo -->
                     <h3
                         class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
-                        {{ note.title }}
+                        <!-- We link directly to our single note detail page by its Primary Key! -->
+                        <a href="{% url 'notes:note_detail' note.pk %}" class="hover:underline">
+                            {{ note.title }}
+                        </a>
                     </h3>
                     <p class="text-slate-500 text-sm leading-relaxed mb-6">
                         {{ note.content }}

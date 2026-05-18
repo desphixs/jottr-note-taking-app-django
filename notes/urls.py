@@ -15,4 +15,9 @@ urlpatterns = [
     # When a visitor lands on the homepage of our notes section, Django will call the 'note_list' chef!
     # We assign name='note_list' so we can easily reference this path in our templates later.
     path('', views.note_list, name='note_list'),
+
+    # This dynamic path maps to our 'note_detail' view function.
+    # The segment '<int:pk>/' acts like a smart mail filter: it checks the URL path for an integer
+    # (like /1/ or /2/) and captures it as a variable named 'pk' to pass directly to our chef!
+    path('<int:pk>/', views.note_detail, name='note_detail'),
 ]

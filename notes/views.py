@@ -30,3 +30,20 @@ def note_list(request):
     # Django will carry this database data to the index.html template, allowing us to loop
     # through the notes and display them dynamically!
     return render(request, 'notes/index.html', context)
+
+# We define a brand new view function to serve the details page of a single specific note!
+# In addition to the standard 'request' parameter, this function takes a second parameter: 'pk'.
+# 'pk' stands for Primary Key, which is the unique cardboard tab ID stamped on each cabinet folder!
+def note_detail(request, pk):
+    # We fetch a single specific note folder from our filing cabinet using its unique Primary Key (pk)!
+    # Think of 'Note.objects.get(pk=pk)' like the detective going directly to the folder with the exact ID stamp
+    # and pulling it out of the drawer!
+    note = Note.objects.get(pk=pk)
+
+    # We pack our single database note record into a central context tray dictionary under the key 'note'.
+    context = {
+        'note': note,
+    }
+
+    # We call the render function to deliver the single note details to our new detail template!
+    return render(request, 'notes/note_detail.html', context)
