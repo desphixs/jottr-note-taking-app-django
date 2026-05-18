@@ -1,85 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'notes/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jottr — Your Digital Sticky Notes</title>
-    <!-- Google Fonts link to import premium modern Outfit typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+{% block title %}Jottr — Your Digital Sticky Notes{% endblock %}
 
-<body class="bg-slate-50 font-sans text-slate-800 min-h-screen py-16 px-6 flex justify-center">
-    <div class="max-w-5xl w-full">
-        <!-- Main header for our note app workspace with a stunning new note creation portal link -->
-        <header class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-slate-200 pb-8 mb-12 gap-6">
-            <div>
-                <!-- Visual highlight logo element for Jottr workspace -->
-                <div class="flex items-center gap-2 mb-3">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-sm shadow-indigo-200">J</div>
-                    <span class="text-xl font-bold tracking-tight text-slate-800">Jottr</span>
-                </div>
-                <p class="text-slate-500 text-lg font-light">
-                    Simplicity in every thought. Your digital sticky note wall.
-                </p>
-            </div>
-            <div>
-                <!-- Stunning primary action button to open our creation form, featuring a micro-rotation icon effect on hover -->
-                <a href="{% url 'notes:create_note' %}"
-                    class="inline-flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-semibold rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 group">
-                    <svg class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                    </svg>
-                    New Sticky Note
+{% block content %}
+<!-- Dynamic note cards container (looping through our context database list) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+    <!-- We use a Django Template Language {percent for percent} loop to process each note item sequentially! -->
+    {% for note in notes %}
+    <div
+        class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
+        <!-- Top accent border line using a solid premium indigo theme -->
+        <div class="absolute top-0 left-0 w-full h-[6px] bg-indigo-600"></div>
+
+        <div>
+            <!-- The group-hover transition dynamically highlights our title in clean indigo -->
+            <h3
+                class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
+                <!-- We link directly to our single note detail page by its Primary Key! -->
+                <a href="{% url 'notes:note_detail' note.pk %}" class="hover:underline">
+                    {{ note.title }}
                 </a>
-            </div>
-        </header>
+            </h3>
+            <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                {{ note.content }}
+            </p>
+        </div>
 
-        <!-- Dynamic note cards container (looping through our context database list) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            <!-- We use a Django Template Language {percent for percent} loop to process each note item sequentially! -->
-            {% for note in notes %}
-            <div
-                class="group bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between">
-                <!-- Top accent border line using a solid premium indigo theme -->
-                <div class="absolute top-0 left-0 w-full h-[6px] bg-indigo-600"></div>
-
-                <div>
-                    <!-- The group-hover transition dynamically highlights our title in clean indigo -->
-                    <h3
-                        class="text-xl font-semibold text-slate-800 mb-3 group-hover:text-indigo-600 transition-colors duration-300">
-                        <!-- We link directly to our single note detail page by its Primary Key! -->
-                        <a href="{% url 'notes:note_detail' note.pk %}" class="hover:underline">
-                            {{ note.title }}
-                        </a>
-                    </h3>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
-                        {{ note.content }}
-                    </p>
-                </div>
-
-                <div
-                    class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
-                    <!-- Displaying the real database created_at field, formatted nicely -->
-                    <span>{{ note.created_at|date:"F j, Y" }}</span>
-                    <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-medium">
-                        Note
-                    </span>
-                </div>
-            </div>
-            <!-- The {percent empty percent} block handles the fallback state beautifully if our list is clean and empty! -->
-            {% empty %}
-            <div class="col-span-full text-center py-12">
-                <p class="text-slate-400 text-lg">No notes found. Your digital sticky-note wall is clean and empty!</p>
-            </div>
-            {% endfor %}
+        <div
+            class="flex justify-between items-center text-xs text-slate-400 border-t border-dashed border-slate-100 pt-4 mt-auto">
+            <!-- Displaying the real database created_at field, formatted nicely -->
+            <span>{{ note.created_at|date:"F j, Y" }}</span>
+            <span class="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-medium">
+                Note
+            </span>
         </div>
     </div>
-</body>
-
-</html>
+    <!-- The {percent empty percent} block handles the fallback state beautifully if our list is clean and empty! -->
+    {% empty %}
+    <div class="col-span-full text-center py-12">
+        <p class="text-slate-400 text-lg">No notes found. Your digital sticky-note wall is clean and empty!</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
