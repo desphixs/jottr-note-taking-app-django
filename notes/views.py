@@ -79,3 +79,38 @@ def create_note(request):
 
     # We call the render function and deliver our form serving tray to the create_note template!
     return render(request, 'notes/create_note.html', context)
+
+# We define a brand new view function to handle editing existing sticky notes!
+# Just like note_detail, this view takes both 'request' and 'pk' parameters.
+# 'pk' represents the unique cardboard tab barcode ID of the note being updated!
+def edit_note(request, pk):
+    # We fetch the specific note folder we want to edit from our SQLite database cabinet!
+    note = Note.objects.get(pk=pk)
+
+    # We check if the incoming request is a POST submission (user clicked "Save Changes"!)
+    if request.method == 'POST':
+        # We fill our note form mold, but this time we pass two arguments:
+        # 1. 'request.POST' representing the new edited text packages.
+        # 2. 'instance=note' pointing back to our existing database row record!
+        # Think of this like replacing the content inside the exact same cardboard folder rather than creating a new one!
+        form = NoteForm(request.POST, instance=note)
+
+        # We verify if the updated fields pass our validation checks
+        if form.is_valid():
+            # We save the modified mold, which updates the existing SQLite row!
+            form.save()
+            # Once updated, we redirect the browser straight to the note's own detail page!
+            return redirect('notes:note_detail', pk=note.pk)
+    else:
+        # If it is a GET request, the user is loading the edit screen for the first time.
+        # We initialize our NoteForm mold pre-filled with the existing note details using 'instance=note'!
+        form = NoteForm(instance=note)
+
+    # We pack the active pre-filled form mold and the note record onto our serving tray!
+    context = {
+        'form': form,
+        'note': note,
+    }
+
+    # We render the edit_note.html template and deliver the context serving tray!
+    return render(request, 'notes/edit_note.html', context)

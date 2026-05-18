@@ -24,4 +24,9 @@ urlpatterns = [
     # This path maps to our 'create_note' view function to handle sticky note submissions.
     # When a visitor clicks "New Sticky Note", they land on '/new/' and see our beautiful note form!
     path('new/', views.create_note, name='create_note'),
+
+    # This path maps to our 'edit_note' view function to handle editing existing notes.
+    # The segment '<int:pk>/edit/' captures the barcode ID of the note being updated,
+    # and opens a pre-populated workspace for edit operations!
+    path('<int:pk>/edit/', views.edit_note, name='edit_note'),
 ]
