@@ -37,6 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # We register our newly created 'notes' app to our active applications registry.
+    # Think of this list like the shopping mall's official store roster: if our notes store
+    # is not written on the manager's master roster, the mall engine won't activate it
+    # or let any visitors access its views, URLs, or templates!
+    'notes',
 ]
 
 MIDDLEWARE = [
