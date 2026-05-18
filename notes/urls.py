@@ -20,4 +20,8 @@ urlpatterns = [
     # The segment '<int:pk>/' acts like a smart mail filter: it checks the URL path for an integer
     # (like /1/ or /2/) and captures it as a variable named 'pk' to pass directly to our chef!
     path('<int:pk>/', views.note_detail, name='note_detail'),
+
+    # This path maps to our 'create_note' view function to handle sticky note submissions.
+    # When a visitor clicks "New Sticky Note", they land on '/new/' and see our beautiful note form!
+    path('new/', views.create_note, name='create_note'),
 ]

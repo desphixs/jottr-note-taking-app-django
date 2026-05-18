@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # We import 'HttpResponse' from django.http to demonstrate how to send raw text back to the browser.
 # In professional apps, writing full HTML code inside Python strings is incredibly messy and disorganized!
 # That is why we quickly graduate to using the 'render' function, which loads a separate, clean HTML template.
@@ -6,6 +6,8 @@ from django.http import HttpResponse
 
 # We import our Note model blueprint class from our local models.py file
 from .models import Note
+# We import our newly designed NoteForm class from our local forms.py file
+from .forms import NoteForm
 
 # Create your views here.
 # In Django, a "view" is just a standard Python function that takes a web request and returns a web response.
@@ -47,3 +49,33 @@ def note_detail(request, pk):
 
     # We call the render function to deliver the single note details to our new detail template!
     return render(request, 'notes/note_detail.html', context)
+
+# We define a brand new view function to handle note creation!
+# Think of this view function like a two-way street or a post-office counter:
+# 1. When a user first opens the page (GET request), we hand them a fresh, clean, empty note form (blank letter).
+# 2. When they click submit (POST request), we collect their typed text package, check it, and save it!
+def create_note(request):
+    # We check if the incoming request method is a POST submission (user sent a package!)
+    if request.method == 'POST':
+        # We fill our note form plaster mold with the raw data packages sent inside the request!
+        form = NoteForm(request.POST)
+
+        # We verify if the data passed all validation checks (e.g. not empty, correct formats)
+        if form.is_valid():
+            # If the mold is verified valid, we save the new note directly to our SQLite database!
+            form.save()
+            # We redirect the visitor cleanly back to our homepage dashboard!
+            # Think of 'redirect' like a automatic portal redirecting their browser instantly!
+            return redirect('notes:note_list')
+    else:
+        # If it is a GET request, the user is just loading the page for the first time.
+        # We hand them a fresh, empty NoteForm plaster mold!
+        form = NoteForm()
+
+    # We pack our active form plaster mold onto our central context serving tray!
+    context = {
+        'form': form,
+    }
+
+    # We call the render function and deliver our form serving tray to the create_note template!
+    return render(request, 'notes/create_note.html', context)
